@@ -7,10 +7,11 @@ resource "azurerm_private_endpoint" "this" {
   tags                          = var.tags
 
   private_service_connection {
-    is_manual_connection           = false
+    is_manual_connection           = var.is_manual_connection
     name                           = var.private_service_connection_name != null ? var.private_service_connection_name : "pse-${var.name}"
     private_connection_resource_id = var.private_connection_resource_id
     subresource_names              = var.subresource_names
+    request_message                = var.request_message
   }
   dynamic "ip_configuration" {
     for_each = var.ip_configurations

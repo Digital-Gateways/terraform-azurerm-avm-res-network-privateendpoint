@@ -89,6 +89,23 @@ variable "lock" {
   }
 }
 
+variable "is_manual_connection" {
+  type        = bool
+  description = "(Optional) Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created."
+  default     = false
+}
+
+variable "request_message" {
+  type        = string
+  description = "(Optional)  message passed to the owner of the remote resource when the private endpoint attempts to establish the connection to the remote resource. Only valid if `is_manual_connection` is set to true"
+  default     = ""
+
+  validation {
+    condition     = var.is_manual_connection == false && length(var.request_message) > 0
+    error_message = "If 'is_manual_connection' is false, 'request_message' must not be provided."
+  }
+}
+
 variable "private_dns_zone_group_name" {
   type        = string
   default     = null
